@@ -31,7 +31,12 @@ net.createServer(function onConnect(c) {
 
         // The actual execution and error handling
         try {
-          var result = String(vm.runInNewContext(js)) + '\n';
+          var result = vm.runInNewContext(js);
+          if (typeof result === 'string') {
+            result = '"' + result + '"\n';
+          } else {
+            result = result + '\n';
+          }
         } catch(e) {
           var result = String(e) + '\n';
         }
