@@ -428,7 +428,7 @@ DynamicAnnotStore = app.trustedFunction(
         // ...
     }
 );
-var store = new DynamicAnnotStore(doc, { name: 'MG', ... }, { ... });
+var store = new DynamicAnnotStore(doc, {}, {});
                         </code></pre>
                         <p>Hogy vegyük rá egy megadott fv. meghívására?</p>
                     </section>
@@ -439,7 +439,11 @@ var store = new DynamicAnnotStore(doc, { name: 'MG', ... }, { ... });
 app.__defineSetter__('doc', app.beginPriv);
 app.__defineSetter__('user', app.trustedFunction);
 
-DynamicAnnotStore.call(/*this=*/app, /*doc=*/null, /*user=*/f);
+DynamicAnnotStore.call(
+    /*this=*/app,
+    /*doc=*/null,
+    /*user=*/f
+);
                         </code></pre>
                         <div class="fragment">
                             <p>Az eredeti kód, és ami valójában történik:</p>
@@ -457,7 +461,11 @@ var t = {};
 t.__defineSetter__('doc', app.beginPriv);
 t.__defineSetter__('user', app.trustedFunction);
 t.__proto__ = app;
-DynamicAnnotStore.call(/*this=*/t, /*doc=*/null, /*user=*/f);
+DynamicAnnotStore.call(
+    /*this=*/t,
+    /*doc=*/null,
+    /*user=*/f
+);
                         </code></pre>
                         <div class="fragment">
                             <p>Az eredeti kód, és ami valójában történik:</p>
@@ -499,9 +507,11 @@ this.user = user -> app.trustedFunction.call(t, f)
                         <p>Korlátozott JS interpreter!</p>
                         <p class="fragment">Tipikus hiba: szerver oldalon template kifejezes beszúrás</p>
                         <pre class="fragment"><code data-trim class="html">
-Money: {{'&lt?php echo $amount ?>' | add_dollar_sign}}
+Money: {{'&lt?php echo htmlspecialchars($amount); ?>'
+         | add_dollar_sign}}
                         </code></pre>
-                        <p class="fragment">Garancia: a beszúrt JS nem vezet XSS-hez! (ha a <code>}</code> escape-elt)</p>
+                        <p class="fragment">A <code>htmlspecialchars</code> ellenére az Angular template kifejezésként értelmezi! Unintuitív, ezért:</p>
+                        <p class="fragment"><strong>Garancia: a beszúrt JS nem vezet XSS-hez, sandbox-ban fut!</strong></p>
                     </section>
                     <section>
                         <h2>Sandbox escape példa</h2>
@@ -524,8 +534,8 @@ Function.prototype.toString = Function.prototype.call;
                         </code></pre>
                         <pre class="fragment"><code data-trim class="javascript">
 Function.prototype.toString = Function.prototype.call;
-if (Function('a', 'alert(1)') < 1) { // ...
-} else if (Function('a', 'alert(1)') > 1) { // ...
+if (Function('a', 'alert(1)') < 0) { // ...
+} else if (Function('a', 'alert(1)') > 0) { // ...
 } else { // ...
 }
                         </code></pre>
@@ -575,7 +585,7 @@ if (eval('alert(1)') < '1') {
                     <p><strong><code>netcat gabor.molnar.es 12345</code></strong></p>
                     <p>Számológép alkalmazás (JavaScript DSL) whitelist szűréssel</p>
                     <p>Cél: a flag.txt fájl tartalmát megszerezni</p>
-                    <!--<p>Hint: <strong><code>Function === function(){}.constructor</code></strong></p>-->
+                    <p><a href="https://github.com/molnarg/javascript-sebezhetosegek/blob/master/challenge/calculator.js">A forráskód itt elérhető.</a></p>
                 </section>
 
                 <section>
