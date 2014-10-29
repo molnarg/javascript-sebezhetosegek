@@ -397,11 +397,13 @@ $.get('/api/user', function(user) {
                         <h2>Trusted státusz elérése</h2>
                         <p>Dummy példa init script:</p>
                         <pre><code data-trim class="javascript">
-app.apiFunction = app.trustedFunction(function(cb_object, cb_name, param) {
-    app.beginPriv(); // ... Do privileged stuff
-    cb_object[cb_name](param);
-    app.endPriv();
-});
+app.apiFunction = app.trustedFunction(
+    function(cb_object, cb_name, param) {
+        app.beginPriv(); // ... Do privileged stuff
+        cb_object[cb_name](param);
+        app.endPriv();
+    }
+);
                         </code></pre>
                         <div class="fragment">
                             <p>Exploit PDF:</p>
