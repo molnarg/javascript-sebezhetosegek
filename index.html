@@ -421,11 +421,13 @@ f();
                     <section>
                         <h2>Bug hunting!</h2>
                         <pre><code data-trim class="javascript">
-DynamicAnnotStore = app.trustedFunction(function (doc, user, settings) {
-    this.doc = doc;
-    this.user = user;
-    // ...
-});
+DynamicAnnotStore = app.trustedFunction(
+    function (doc, user, settings) {
+        this.doc = doc;
+        this.user = user;
+        // ...
+    }
+);
 var store = new DynamicAnnotStore(doc, { name: 'MG', ... }, { ... });
                         </code></pre>
                         <p>Hogy vegyük rá egy megadott fv. meghívására?</p>
