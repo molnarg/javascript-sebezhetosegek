@@ -4,7 +4,6 @@ var fs = require('fs');
 var readline = require('readline');
 
 var flag = fs.readFileSync('flag.txt').toString().trim();
-var source_code = fs.readFileSync('calculator.js').toString().trim();
 
 // Creating a TCP server
 net.createServer(function onConnect(c) {
@@ -17,8 +16,8 @@ net.createServer(function onConnect(c) {
   // Welcome message
   c.write('Welcome to the Completely Secure Online Calculator.\n');
   c.write('Please send the content of flag.txt to gabor@molnar.es if you somehow manage to read it.\n');
-  c.write('The code is open source in case you want to run it locally (you will need node.js for that):\n\n');
-  c.write(source_code.replace(/^/mg, '    ') + '\n\n');
+  c.write('The code is open source in case you want to run it locally (you will need node.js for that).\n');
+  c.write('It is available here: https://github.com/molnarg/javascript-sebezhetosegek/blob/master/challenge/calculator.js\n\n');
   c.write('Let\'s start. Why not try something simple first? Like 1+2, 3+4, 1/0 or 1[0].\n\n')
 
   // Reading one line of input and evaluating the expression
